@@ -2,7 +2,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.*;
 
 public class Task1 {
 
@@ -55,9 +55,10 @@ public class Task1 {
             new Person(6, "Amelia"),
             new Person(7, "Amelia"),
             new Person(8, "Amelia"),
-            //new Person(3, "Anna"),
-            //new Person(1, "Anna"),
-            //new Person(8, "Anna"),
+            //new Person(87, "Anna"),
+            //new Person(11, "Anna"),
+            //null,
+            //null
     };
         /*  Raw data:
 
@@ -121,15 +122,13 @@ public class Task1 {
                 Value:1
          */
 
-        Map<String, List<Person>> myMap = Stream.of(RAW_DATA)
+        TreeMap<String, List<Person>> myMap = Stream.of(RAW_DATA)
+                .filter(Objects::nonNull)
                 .distinct()
                 .sorted(Comparator.comparing(Person::getId))
-                .collect(Collectors.groupingBy(Person::getName));
+                .collect(Collectors.groupingBy(Person::getName, TreeMap::new, Collectors.toList()));
 
-        myMap.entrySet().stream().sorted(Map.Entry.comparingByKey())
-                .forEach((e-> System.out.println("Key: " + e.getKey() + "\n" + "Value: " + e.getValue().size())));
+        myMap.forEach((key, value) -> System.out.println("Key: " + key + "\n" + "Value: " + value.size()));
 
-        //проверка
-        //myMap.entrySet().stream().sorted(Map.Entry.comparingByKey()).forEach(e-> System.out.println(e.toString()));
     }
 }
